@@ -11,12 +11,11 @@ import time
 bot = telebot.TeleBot(token)
 connect(bot_base)
 
-#Threads-----------------------------------------------------------------
-# from rolling import roll
-# print("afsdf")
-# roll_thread = Thread(target=roll(1))
-# roll_thread.start()
-# print("asd")
+#Roll Thread-----------------------------------------------------------------
+from rolling import roll
+roll_thread = Thread(target=roll, args=(10,))
+roll_thread.start()
+print('Rolling started')
 
 #Keyboards-----------------------------------------------------------------
 start_keyboard = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
@@ -112,19 +111,6 @@ def count(message):
     info_kb.add(*buttons_list)
     bot.send_message(message.chat.id, text='Выберите тип ставки:',
                      reply_markup=info_kb)
-
-# @bot.callback_query_handler(func=lambda call: call.data == 'News')
-# def news(call):
-#     news = Text.objects.filter(title='news').order_by('date')
-#     for new in news:
-#         bot.send_message(call.message.chat.id, text=f'Дата: {new.date}\n' + f'Название: {new.title}\n' + new.text,
-#                          reply_markup=start_keyboard)
-
-# @bot.callback_query_handler(func=lambda call: call.data == 'Rules')
-# def news(call):
-#     roles = Text.objects.filter(title='rules').first()
-#     bot.send_message(call.message.chat.id, text=f'Правила игры в рулетку:\n' + roles.text,
-#                      reply_markup=start_keyboard)
 
 @bot.message_handler(regexp='В главное меню')
 def count(message):

@@ -47,4 +47,3 @@ def roll(seconds):
                                                         f'Счет: {bet.user.count}$',)
         time.sleep(seconds)
 
-roll(10)
