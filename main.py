@@ -6,16 +6,13 @@ from telebot.types import (InlineKeyboardButton,
                            InlineKeyboardMarkup,
                            ReplyKeyboardMarkup)
 import time
+from utils import thread_rolling
+
 
 bot = telebot.TeleBot(token)
 connect(bot_base)
 
-#Roll Thread-----------------------------------------------------------------
-from threading import Thread
-from rolling import roll
-roll_thread = Thread(target=roll, args=(10,))
-roll_thread.start()
-print('Rolling started')
+thread_rolling()
 
 #Keyboards-----------------------------------------------------------------
 start_keyboard = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
