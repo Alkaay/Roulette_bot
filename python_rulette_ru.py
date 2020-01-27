@@ -28,8 +28,8 @@ def roll(roll_number, bet_numbers, multiplier):
 
 while True:
     print('Выберите тип ставки:')
-    # for b in range(len(bets)):
-    #     print(b+1, ':', bets[b])
+    for b in range(len(bets)):
+        print(b+1, ':', bets[b])
 
     bet_type = input('Bet type:')
     bet_size = int(input('Выберите размер ставки:'))

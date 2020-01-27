@@ -1,0 +1,7 @@
+__pycache__/
+.idea/
+venv/
+config.py
+test.py
+db_interface.py
+utils.py

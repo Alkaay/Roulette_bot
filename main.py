@@ -1,5 +1,4 @@
 import telebot
-from threading import Thread
 from config import token, bot_base
 from mongoengine import connect
 from models import User, Bet, Text
@@ -12,6 +11,7 @@ bot = telebot.TeleBot(token)
 connect(bot_base)
 
 #Roll Thread-----------------------------------------------------------------
+from threading import Thread
 from rolling import roll
 roll_thread = Thread(target=roll, args=(10,))
 roll_thread.start()

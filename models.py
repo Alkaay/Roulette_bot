@@ -40,8 +40,5 @@ class Bet(Document):
     date = StringField(max_length=36)
     result = IntField(default=0) #'0'-wating, '-1'-lose, '1'-win
 
-    @classmethod
-    def check_last_bet(cls, id):
-        bes = cls.objects.filter(user_id=id)
 
 
