@@ -1,41 +1,18 @@
 import telebot
+import time
+import os
 from config import token, bot_base
 from mongoengine import connect
 from models import User, Bet, Text
 from telebot.types import (InlineKeyboardButton,
                            InlineKeyboardMarkup,
                            ReplyKeyboardMarkup)
-import time
 from utils import thread_rolling
-from flask import Flask, abort, request
+from linux_webhook_runner import runn_webhook
 
-
-app = Flask(__name__)
 bot = telebot.TeleBot(token)
 connect(bot_base)
 thread_rolling()
-
-# Process webhook calls
-WEBHOOK_HOST = '34.70.37.200' #outer ip
-WEBHOOK_PORT = 80 # 443, 80, 88 or 8443 (port need to be 'open')
-WEBHOOK_LISTEN = '0.0.0.0' # in some VPS you may need to put here the IP addr
-
-WEBHOOK_SSL_CERT = './webhook_cert.pem' # path to the ssl certificate
-WEBHOOK_SSL_PRIV = './webhook_pkey.pem' # path to the ssl private key
-
-WEBHOOK_URL_BASE = 'https://%s:%s' % (WEBHOOK_HOST, WEBHOOK_PORT)
-WEBHOOK_URL_PATH = '/%s/' % (token)
-
-@app.route(WEBHOOK_URL_PATH, methods=['POST'])
-def webhook():
-    if  request.headers.get('content-type') == 'application/json':
-        json_string = request.get_data().decode('utf-8')
-        update = telebot.types.Update.de_json(json_string)
-        bot.process_new_updates([update])
-        return ''
-    else:
-        abort(403)
-
 
 #Keyboards-----------------------------------------------------------------
 start_keyboard = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
@@ -233,14 +210,7 @@ def bet_size_change_handler(message):
 #--------------------------------------------------------------------------------------------------------------
 
 print("Bot started")
-# bot.polling(none_stop=True)
-
-bot.remove_webhook()
-time.sleep(0.1)
-bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH,
-                certificate=open(WEBHOOK_SSL_CERT, 'r'))
-app.run(host=WEBHOOK_LISTEN,
-        port=WEBHOOK_PORT,
-        ssl_context=(WEBHOOK_SSL_CERT, WEBHOOK_SSL_PRIV),
-        debug=True)
-
+if os.name == 'posix':
+    runn_webhook(token, bot)
+else:
+    bot.polling(none_stop=True)

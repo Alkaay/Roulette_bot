@@ -9,7 +9,6 @@ import time
 bot = telebot.TeleBot(token)
 connect(bot_base)
 
-
 def roll(seconds):
     while True:
         print('new roll')
