@@ -2,7 +2,6 @@ def runn_webhook(token, bot):
     from flask import Flask, abort, request
     import telebot
     import time
-    import os
 
     app = Flask(__name__)
 
@@ -11,8 +10,8 @@ def runn_webhook(token, bot):
     WEBHOOK_PORT = 80  # 443, 80, 88 or 8443 (port need to be 'open')
     WEBHOOK_LISTEN = '0.0.0.0'  # in some VPS you may need to put here the IP addr
 
-    WEBHOOK_SSL_CERT = os.getcwd() + '/webhook_cert.pem'  # path to the ssl certificate
-    WEBHOOK_SSL_PRIV = os.getcwd() + '/webhook_pkey.pem'  # path to the ssl private key
+    WEBHOOK_SSL_CERT = '/home/frizon1993/webhook_cert.pem'  # path to the ssl certificate
+    WEBHOOK_SSL_PRIV = '/home/frizon1993/webhook_pkey.pem'  # path to the ssl private key
 
     WEBHOOK_URL_BASE = 'https://%s:%s' % (WEBHOOK_HOST, WEBHOOK_PORT)
     WEBHOOK_URL_PATH = '/%s/' % (token)
