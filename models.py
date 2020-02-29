@@ -7,6 +7,7 @@ class User(Document):
     surname = StringField()
     nickname = StringField()
     count = IntField()
+    state = IntField(default=0)
 
     @classmethod
     def get_or_create_user(cls, message):
@@ -21,6 +22,17 @@ class User(Document):
                        surname=message.from_user.last_name,
                        nickname=message.from_user.username,
                        count=100,).save()
+
+    @classmethod
+    def get_state(cls, id):
+        user = cls.objects.filter(user_id=id).first()
+        return user.state
+
+    @classmethod
+    def set_state(cls, id, state):
+        user = cls.objects.filter(user_id=id).first()
+        user.state = state
+        user.save()
 
     @classmethod
     def get_user(cls, id):

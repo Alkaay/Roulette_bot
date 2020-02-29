@@ -6,10 +6,10 @@ from models import User, Bet
 import time
 
 
-bot = telebot.TeleBot(token)
+# bot = telebot.TeleBot(token)
 connect(bot_base)
 
-def roll(seconds):
+def roll(seconds, bot):
     while True:
         print('new roll')
         roll_number = random.randint(0, 36)

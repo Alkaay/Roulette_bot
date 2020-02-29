@@ -9,15 +9,17 @@ from telebot.types import (InlineKeyboardButton,
                            ReplyKeyboardMarkup)
 from utils import thread_rolling
 from linux_webhook_runner import runn_webhook
+import cheks
+
 
 bot = telebot.TeleBot(token)
 connect(bot_base)
-thread_rolling()
+thread_rolling(10, bot)
 
 #Keyboards-----------------------------------------------------------------
 start_keyboard = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
 start_keyboard.add('Рулетка',
-                   # 'Инфо',
+                   'Инфо',
                    )
 
 #Functions-----------------------------------------------------------------
@@ -134,11 +136,29 @@ def start(message):
 def count(message):
     info_kb = InlineKeyboardMarkup(row_width=2)
     buttons_list = []
-    buttons_list.append(InlineKeyboardButton(text='Новости', callback_data='News'))
+    buttons_list.append(InlineKeyboardButton(text='Написать отзыв\nавтору бота', callback_data='Comment'))
+    # buttons_list.append(InlineKeyboardButton(text='Таблица лидеров', callback_data='Table'))
+    # buttons_list.append(InlineKeyboardButton(text='Новости', callback_data='News'))
     # buttons_list.append(InlineKeyboardButton(text='Правила', callback_data='Rules'))
     info_kb.add(*buttons_list)
-    bot.send_message(message.chat.id, text='Выберите тип ставки:',
+    bot.send_message(message.chat.id, text='Инфо:',
                      reply_markup=info_kb)
+
+@bot.callback_query_handler(func=lambda call: call.data == 'Comment')
+def send_comment(call):
+    bot.send_message(call.message.chat.id, text=f'Напишите ваше сообщение:',
+                     reply_markup=start_keyboard)
+    User.set_state(call.from_user.id, 1)
+@bot.message_handler(func=cheks.wright_comment)
+def count(message):
+    Text(title=f'{message.from_user.username}',
+         type='comment',
+         text=message.text,
+         date=time.strftime("%y.%m.%d (%H:%M:%S)")
+         ).save()
+    bot.send_message(180856655, text=f'Новое сообщение от @{message.from_user.username}:\n{message.text}')
+    bot.send_message(message.chat.id, text=f'Сообщение успешно отправлено 👍')
+    User.set_state(message.from_user.id, 0)
 
 @bot.message_handler(regexp='В главное меню')
 def count(message):
