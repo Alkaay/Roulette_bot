@@ -9,7 +9,7 @@ def runn_webhook(bot):
     # Process webhook calls
     WEBHOOK_HOST = outer_ip  # outer ip
     WEBHOOK_PORT = 443  # 443, 80, 88 or 8443 (port need to be 'open')
-    WEBHOOK_LISTEN = '0.0.0.0'  # in some VPS you may need to put here the IP addr
+    WEBHOOK_LISTEN = outer_ip  # in some VPS you may need to put here the IP addr
 
     WEBHOOK_SSL_CERT = '/home/frizon1993/webhook_cert.pem'  # path to the ssl certificate
     WEBHOOK_SSL_PRIV = '/home/frizon1993/webhook_pkey.pem'  # path to the ssl private key
