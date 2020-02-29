@@ -23,12 +23,12 @@ start_keyboard.add('Рулетка',
 #Functions-----------------------------------------------------------------
 def bet_type_chose(message_or_call, next_call_data):
     bets = ('Число',
-            'Красн/черн',
-            # 'Колонка',
-            # 'Дюжина',
-            # 'Половина',
-            # 'Чет/нечет',
+            '🔴/⚫',
+            'Чет/Нечет',
+            'Половина',
+            'Дюжина',
             # 'До 4х чисел',
+            # 'Колонка',
             )
     bets_kb = InlineKeyboardMarkup(row_width=3)
     buttons_list = []
@@ -63,13 +63,44 @@ def bet_choyse(call, next_call_data, bet_size=''):
     elif call.data.split('_')[1] == '2':
         bet_color_kb = InlineKeyboardMarkup(row_width=3)
         buttons_list = []
-        colors = ('Красное', 'Черное')
+        colors = ('🔴', '⚫')
         for bet_color in colors:
             buttons_list.append(InlineKeyboardButton(
                 text=bet_color, callback_data=f'{next_call_data}_' + bet_size + bet_color))
         bet_color_kb.add(*buttons_list)
         bot.send_message(call.message.chat.id, text='Выберите цвет ставки:',
                          reply_markup=bet_color_kb)
+    elif call.data.split('_')[1] == '3':
+        bet_choice_kb = InlineKeyboardMarkup(row_width=2)
+        buttons_list = []
+        bets = ('Четные', 'Нечетные')
+        for bet in bets:
+            buttons_list.append(InlineKeyboardButton(
+                text=bet, callback_data=f'{next_call_data}_' + bet_size + bet))
+        bet_choice_kb.add(*buttons_list)
+        bot.send_message(call.message.chat.id, text='Выберите тип ставки:',
+                         reply_markup=bet_choice_kb)
+    elif call.data.split('_')[1] == '4':
+        bet_choice_kb = InlineKeyboardMarkup(row_width=2)
+        buttons_list = []
+        bets = ('1-18', '19-36')
+        for bet in bets:
+            buttons_list.append(InlineKeyboardButton(
+                text=bet, callback_data=f'{next_call_data}_' + bet_size + bet))
+        bet_choice_kb.add(*buttons_list)
+        bot.send_message(call.message.chat.id, text='Выберите тип ставки:',
+                         reply_markup=bet_choice_kb)
+    elif call.data.split('_')[1] == '5':
+        bet_choice_kb = InlineKeyboardMarkup(row_width=3)
+        buttons_list = []
+        bets = ('1-12', '13-24', '25-36')
+        for bet in bets:
+            buttons_list.append(InlineKeyboardButton(
+                text=bet, callback_data=f'{next_call_data}_' + bet_size + bet))
+        bet_choice_kb.add(*buttons_list)
+        bot.send_message(call.message.chat.id, text='Выберите тип ставки:',
+                         reply_markup=bet_choice_kb)
+
 
 
 def bet_size(bet_type=None, call=None, message=None):
@@ -139,13 +170,41 @@ def bet_saver(call):
     bet_size = call.data.split('_')[1]
     call_bet_type = call.data.split("_")[2]
 
-    if call_bet_type == 'Черное':
+    if call_bet_type == '⚫':
         bet_type = call_bet_type
         bet_numbers = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
         in_message_bet = bet_type
-    elif call_bet_type == 'Красное':
+    elif call_bet_type == '🔴':
         bet_type = call_bet_type
         bet_numbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+        in_message_bet = bet_type
+    elif call_bet_type == 'Четные':
+        bet_type = call_bet_type
+        bet_numbers = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+        in_message_bet = bet_type
+    elif call_bet_type == 'Нечетные':
+        bet_type = call_bet_type
+        bet_numbers = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35]
+        in_message_bet = bet_type
+    elif call_bet_type == '1-18':
+        bet_type = call_bet_type
+        bet_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        in_message_bet = bet_type
+    elif call_bet_type == '19-36':
+        bet_type = call_bet_type
+        bet_numbers = [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+        in_message_bet = bet_type
+    elif call_bet_type == '1-12':
+        bet_type = call_bet_type
+        bet_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        in_message_bet = bet_type
+    elif call_bet_type == '13-24':
+        bet_type = call_bet_type
+        bet_numbers = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+        in_message_bet = bet_type
+    elif call_bet_type == '25-36':
+        bet_type = call_bet_type
+        bet_numbers = [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
         in_message_bet = bet_type
     else:
         str_bet_numbers = call_bet_type.split(',')
@@ -158,8 +217,8 @@ def bet_saver(call):
     Bet(user=user, bet_size=bet_size, bet_numbers=bet_numbers, bet_type=bet_type,
         date=time.strftime("%y.%m.%d (%H:%M:%S)")).save()
     print('New bet from:' + str(user.nickname))
-    bot.send_message(call.message.chat.id, text=f'Ставка принята:\n'
-                                                f'{bet_size}$ на "{in_message_bet}"',
+    bot.send_message(call.message.chat.id, text=f'Ставка принята: {bet_size}$ на "{in_message_bet}"\n'
+                                                f'Ждите пока шарик остановится',
                      reply_markup=roulette_kb)
 
 
@@ -179,8 +238,8 @@ def lust_bet_repeet(message):
         bet_type = ''
         for number in bet_numbers:
             bet_type += f'{number}'
-    bot.send_message(message.chat.id, text=f'Ставка принята:\n'
-                                           f'{bet_size}$ на "{bet_type}"')
+    bot.send_message(message.chat.id,  text=f'Ставка принята: {bet_size}$ на "{bet_type}"\n'
+                                            f'Ждите пока шарик остановится')
 
 @bot.message_handler(regexp='На что то другое')
 def bet_type_change_1st_step(message):
@@ -211,6 +270,6 @@ def bet_size_change_handler(message):
 
 print("Bot started")
 if os.name == 'posix':
-    runn_webhook(token, bot)
+    runn_webhook(bot)
 else:
     bot.polling(none_stop=True)

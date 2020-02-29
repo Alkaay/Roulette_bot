@@ -17,11 +17,11 @@ def roll(seconds):
         red_numbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
         black_numbers = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
         if roll_number in red_numbers:
-            color = 'Красное'
+            color = '🔴'
         elif roll_number in black_numbers:
-            color = 'Черное'
+            color = '⚫'
         elif roll_number == 0:
-            color = 'Зеленое'
+            color = '🍏'
         for bet in bets:
             user = bet.user
             if roll_number in bet.bet_numbers:
@@ -31,8 +31,8 @@ def roll(seconds):
                 bet.save()
                 user.save()
                 bot.send_message(user.user_id, text=f'Шарик остановился на {roll_number} {color}\n'
-                                                    f'😃Поздравляем вы победили!!!😃\n'
-                                                    f'Выиграш: {win_size}$\n'
+                                                    f'😃Поздравляем вы победили😃\n'
+                                                    f'Выиграш: +{win_size}$\n'
                                                     f'Счет: {bet.user.count}$',)
 
             else:
@@ -42,7 +42,7 @@ def roll(seconds):
                 user.save()
                 bot.send_message(bet.user.user_id, text=f'Шарик остановился на {roll_number} {color}\n'
                                                         f'😞Вы проиграли😞\n'
-                                                        f'Проигрыш: {bet.bet_size}$\n'
+                                                        f'Проигрыш: -{bet.bet_size}$\n'
                                                         f'Счет: {bet.user.count}$',)
         time.sleep(seconds)
 
