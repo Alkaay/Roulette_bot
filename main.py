@@ -14,7 +14,7 @@ import cheks
 
 bot = telebot.TeleBot(token)
 connect(bot_base)
-thread_rolling(10, bot)
+
 
 #Keyboards-----------------------------------------------------------------
 start_keyboard = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True, row_width=1)
@@ -288,8 +288,13 @@ def bet_size_change_handler(message):
 
 #--------------------------------------------------------------------------------------------------------------
 
-print("Bot started")
-if os.name == 'posix':
-    runn_webhook(bot)
-else:
-    bot.polling(none_stop=True)
+while True:
+    try:
+        thread_rolling(10, bot)
+        print("Bot started")
+        if os.name == 'posix':
+            runn_webhook(bot)
+        else:
+            bot.polling(none_stop=True)
+    except Exception as e:
+        print(e)
