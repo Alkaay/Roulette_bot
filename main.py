@@ -113,7 +113,7 @@ def bet_size(bet_type=None, call=None, message=None):
         call_or_message = message
     bet_size_kb = InlineKeyboardMarkup(row_width=4)
     buttons_list = []
-    sizes = (1, 5, 10, 15)
+    sizes = (10, 50, 100, 150)
     for bet_size in sizes:
         buttons_list.append(InlineKeyboardButton(
             text=f'{bet_size}$', callback_data='bet_' + str(bet_size) + '_' + bet_type))
@@ -288,13 +288,9 @@ def bet_size_change_handler(message):
 
 #--------------------------------------------------------------------------------------------------------------
 
-while True:
-    try:
-        thread_rolling(10, bot)
-        print("Bot started")
-        if os.name == 'posix':
-            runn_webhook(bot)
-        else:
-            bot.polling(none_stop=True)
-    except Exception as e:
-        print(e)
+
+thread_rolling(10, bot)
+print("Bot started")
+bot.polling(none_stop=True)
+
+

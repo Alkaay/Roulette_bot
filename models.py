@@ -21,7 +21,7 @@ class User(Document):
                        name=message.from_user.first_name,
                        surname=message.from_user.last_name,
                        nickname=message.from_user.username,
-                       count=100,).save()
+                       count=1000,).save()
 
     @classmethod
     def get_state(cls, id):
