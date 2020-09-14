@@ -4,9 +4,7 @@ import os
 from config import token, bot_base
 from mongoengine import connect
 from models import User, Bet, Text
-from telebot.types import (InlineKeyboardButton,
-                           InlineKeyboardMarkup,
-                           ReplyKeyboardMarkup)
+from telebot.types import (InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup)
 from utils import thread_rolling
 from linux_webhook_runner import runn_webhook
 import cheks
