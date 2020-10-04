@@ -15,7 +15,7 @@ class User(Document):
         if user:
             return user
         else:
-            print("message.from_user.id" ,message.from_user.id)
+            print("message.from_user.id", message.from_user.id)
             print('message.chat.id', message.chat.id)
             return cls(user_id=message.from_user.id,
                        name=message.from_user.first_name,
@@ -38,11 +38,13 @@ class User(Document):
     def get_user(cls, id):
         return cls.objects.filter(user_id=id).first()
 
+
 class Text(Document):
     title = StringField(max_length=128)
     type = StringField(max_length=64)
     text = StringField(max_length=4096)
     date = StringField(max_length=36)
+
 
 class Bet(Document):
     user = ReferenceField(User)
