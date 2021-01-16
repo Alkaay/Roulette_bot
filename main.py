@@ -120,6 +120,7 @@ def bet_size(bet_type=None, call=None, message=None):
 #Handlers-----------------------------------------------------------------
 @bot.message_handler(commands=['start'])
 def start(message):
+    print(message.from_user.first_name)
     user = User.get_or_create_user(message)
     if message.from_user.first_name:
         name = ' ' + message.from_user.first_name
@@ -285,6 +286,6 @@ def bet_size_change_handler(message):
 #--------------------------------------------------------------------------------------------------------------
 
 
-thread_rolling(10, bot)
+#thread_rolling(10, bot)
 print("Bot started")
 bot.polling(none_stop=True)
