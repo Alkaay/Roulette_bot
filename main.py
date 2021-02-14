@@ -232,7 +232,7 @@ def bet_saver(call):
 
     Bet(user=user, bet_size=bet_size, bet_numbers=bet_numbers, bet_type=bet_type,
         date=time.strftime("%y.%m.%d (%H:%M:%S)")).save()
-    print('New bet from:' + str(user.nickname))
+    # print('New bet from:' + str(user.nickname))
     bot.send_message(call.message.chat.id, text=f'Ставка принята: {bet_size}$ на "{in_message_bet}"\n'
                                                 f'Ждите пока шарик остановится',
                      reply_markup=roulette_kb)
@@ -248,7 +248,7 @@ def lust_bet_repeet(message):
 
     Bet(user=user, bet_size=bet_size, bet_numbers=bet_numbers, bet_type=bet_type,
         date=time.strftime("%y.%m.%d (%H:%M:%S)")).save()
-    print('New bet from:' + str(user.nickname))
+    # print('New bet from:' + str(user.nickname))
 
     if bet_type == 'Число(а)':
         bet_type = ''
